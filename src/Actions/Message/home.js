@@ -16,8 +16,8 @@ class Home {
       }
 
       const text = status
-        ? `Halo, ${name}\n\nSelamat datang kembali di *BOLIA*\nUnoffical BOT Library UAJY\n\nSilahkan memilih menu di bawah ini :\n\n\t\`1\` Ketersediaan ruang\n\t\`2\` Pesan ruang`
-        : "Selamat datang di *BOLIA*\nnUnoffical BOT Library UAJY\n\nDisini kamu bisa melihat ruang yang tersedia dan memesannya 🤗\n\nSilahkan memilih menu di bawah ini :\n\n\t`1` Ketersediaan ruang\n\t`2` Pesan ruang";
+        ? `Halo, ${name}\n\nSelamat datang kembali di *BOLIA*\nUnoffical BOT Library UAJY\n\nSilahkan memilih menu di bawah ini :\n\n\t\`1\` Pesan ruang`
+        : "Selamat datang di *BOLIA*\nnUnoffical BOT Library UAJY\n\nDisini kamu bisa melihat ruang yang tersedia dan memesannya 🤗\n\nSilahkan memilih menu di bawah ini :\n\n\t`1` Pesan ruang";
       await sendMessageWTyping(sock, getJid(message), { text });
       await updateData(getPhoneNumber(message), { status: "online", history: "menu" });
     } catch (error) {

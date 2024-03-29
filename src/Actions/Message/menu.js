@@ -53,24 +53,7 @@ class Menu {
         }
       }
 
-      if (msg === "1")
-      {
-        await sendMessageWTyping(sock, getJid(message), {
-          text: "BOLIA sedang mencari ruang yang tersedia 🕵️‍♂️\n\nMohon tunggu sebentar ya..."
-        });
-        await sendMessageWTyping(sock, getJid(message), {
-          text: `Ruang yang tersedia : \n\n${await available()}`
-        });
-        if (await onDB(getPhoneNumber(message))) {
-          msgCount = 2;
-        } else {
-          await sendMessageWTyping(sock, getJid(message), {
-            text: "Masukkan NPM/NPP anda :",
-          });
-          msgCount++;
-        }
-      }
-      else if (msg === "2")
+      if (msg === "2")
       {
         if (await onDB(getPhoneNumber(message)))
         {

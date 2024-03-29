@@ -1,9 +1,10 @@
 const { isDate, date } = require("../../supports/validate");
+const { updateData } = require("../../supports/database");
 const { available } = require("../../supports/fetch");
 const { 
   sendMessageWTyping,
-  getMessageCaption, 
-  getPhoneNumber, 
+  getMessageCaption,
+  getPhoneNumber,
   getJid
 } = require("../../supports/message");
 
@@ -25,8 +26,9 @@ class Book {
             text: `Ruang yang tersedia :\n\n📅 ${date(msg, true)}\n\n${availableRoom}`
           });
           await sendMessageWTyping(sock, getJid(message), {
-            text: "Silahkan pilih waktu yang ingin kamu pesan : \n\n`1` 08.00 - 09.30 WIB\n`2` 09.30 - 11.00 WIB\n`3` 11.00 - 12.30 WIB\n`4` 12.30 - 14.00 WIB\n`5` 14.00 - 15.30 WIB\n`6` 15.30 - 17.00 WIB\n`7` 17.00 - 18.30 WIB",
+            text: "Silahkan pilih ruang yang ingin kamu pesan : \n\n`1` Discussion Room 1\n`2` Discussion Room 2\n`3` Discussion Room 3\n`4` Leisure Room 1",
           });
+          await updateData(getPhoneNumber(message), { history: "room", date: date(msg) });
         }
         else
         {

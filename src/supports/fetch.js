@@ -61,6 +61,7 @@ const getNPM = async (npm) => {
 };
 
 const withDate = (data) => {
+  tempData = "";
   for (const room in data) {
     tempData += `🏠 ${room}\n`;
     const time = data[room];
@@ -76,6 +77,7 @@ const withDate = (data) => {
 };
 
 const withoutDate = (data) => {
+  tempData = "";
   for (const date in data) {
     tempData += `📅 ${date}\n`;
     for (const room in data[date]) {

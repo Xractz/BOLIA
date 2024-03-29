@@ -1,0 +1,28 @@
+{
+  "name": "bolia",
+  "version": "1.0.0",
+  "description": "WhatsApp BOT LIB UAJY",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon src/index.js"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "src/session/*",
+      "src/Database/*"
+    ]
+  },
+  "keywords": [
+    "lib",
+    "uajy"
+  ],
+  "author": "samchristg",
+  "license": "ISC",
+  "dependencies": {
+    "@whiskeysockets/baileys": "^6.6.0",
+    "axios": "^1.6.8",
+    "nodemon": "^3.1.0",
+    "pino": "^8.19.0",
+    "qrcode-terminal": "^0.12.0"
+  }
+}

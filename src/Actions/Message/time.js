@@ -1,5 +1,4 @@
-const { isDate, date } = require("../../supports/validate");
-const { updateData, data } = require("../../supports/database");
+const { updateData, data, checkData } = require("../../supports/database");
 const { booking } = require("../../supports/fetch");
 const { sendMessageWTyping, getMessageCaption, getPhoneNumber, getJid } = require("../../supports/message");
 
@@ -23,11 +22,19 @@ class Time {
         dataUser.time = timeHandler[msg];
         const response = await booking(dataUser);
         const responseMsg = response.data.message;
+        const sendRMsg = `
+👤 Nama          : ${await checkData(getPhoneNumber(message), "name")}
+🪪 NPM/NPP  : ${dataUser.npm}
+🏠 Ruang         : ${dataUser.room}
+📅 Tanggal      : ${dataUser.date}
+🕒 Waktu         : ${dataUser.time}\n
+> ${responseMsg}
+`;
 
         if (responseMsg === "Booking Success, please check your email")
         {
           await sendMessageWTyping(sock, getJid(message), {
-            text: `✅ *Pemesanan Berhasil*\n\n🏠 Ruang  : ${dataUser.room}\n📅 Tanggal  : ${dataUser.date}\n🕒 Waktu  : ${dataUser.time}\n\n> ${responseMsg}`,
+            text: `✅ *Pemesanan Berhasil*\n${sendRMsg}`,
           });
           await sendMessageWTyping(sock, getJid(message), {
             text: "Terimakasih telah menggunakan layanan kami 🥰",
@@ -37,13 +44,13 @@ class Time {
         else if (responseMsg === "Waktu yang anda pilih sudah dibooking, silahkan memilih waktu yang kosong")
         {
           await sendMessageWTyping(sock, getJid(message), {
-            text: `❌ *Pemesanan Gagal*\n\n🏠 Ruang\  : ${dataUser.room}\n📅 Tanggal  : ${dataUser.date}\n🕒 Waktu  : ${dataUser.time}\n\n> ${responseMsg}`,
+            text: `❌ *Pemesanan Gagal*\n${sendRMsg}`,
           });
         }
         else if (responseMsg === "Anda sudah booking di tanggal yang sama, silahkan memilih tanggal yang berbeda")
         {
           await sendMessageWTyping(sock, getJid(message), {
-            text: `❌ *Pemesanan Gagal*\n\n🏠 Ruang\  : ${dataUser.room}\n📅 Tanggal  : ${dataUser.date}\n🕒 Waktu  : ${dataUser.time}\n\n> ${responseMsg}`,
+            text: `❌ *Pemesanan Gagal*\n${sendRMsg}`,
           });
         }
       }

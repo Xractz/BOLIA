@@ -40,8 +40,18 @@ const onDB = async (message) => {
   }
 };
 
+let data = async (phoneNumber) => {
+  return data = {
+    npm: await checkData(phoneNumber, "npm"),
+    room: await checkData(phoneNumber, "room"),
+    date: await checkData(phoneNumber, "date"),
+    time: "",
+  };
+}
+
 module.exports ={
   onDB,
+  data,
   checkData,
   getRawData,
   createData,

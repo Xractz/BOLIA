@@ -18,7 +18,8 @@ class Menu {
 
       if (await onDB(getPhoneNumber(message))) { msgCount = 2 }
 
-      if (msgCount === 2) {
+      if (msgCount === 2)
+      {
         if(!await onDB(getPhoneNumber(message)))
         {
           if (!isID(msg)) {
@@ -33,17 +34,20 @@ class Menu {
           onFetch = data.name;
         }
         
-        if (onFetch || await onDB(getPhoneNumber(message))) {
+        if (onFetch || await onDB(getPhoneNumber(message)))
+        {
           const name = await checkData(getPhoneNumber(message), "name") || data.name;
           const npm = await checkData(getPhoneNumber(message), "npm") || data.npm;
           await updateData(getPhoneNumber(message), { name, npm });
           
           const text = onFetch ? `Halo, ${onFetch}\n\nSilahkan pilih tanggal yang ingin kamu pesan dengan mengetikkan tanggal dengan format :\n\n\`ddmmyyyy\`\n\nex: \`01042024\`` : `Silahkan pilih tanggal yang ingin kamu pesan dengan mengetikkan tanggal dengan format :\n\n\`ddmmyyyy\`\n\nex: \`01042024\``;
           
-          await sendMessageWTyping(sock, getJid(message), { text });
           await updateData(getPhoneNumber(message), { history: "book" });
+          msgCount--;
+          return await sendMessageWTyping(sock, getJid(message), { text });
         }
-        else {
+        else
+        {
           const text = "Maaf, NPM/NPP yang kamu masukkan tidak terdaftar 😓\nSilahkan masukkan NPM/NPP yang benar";
           await sendMessageWTyping(sock, getJid(message), { text });
         }

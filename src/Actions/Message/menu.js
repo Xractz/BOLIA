@@ -22,11 +22,13 @@ class Menu {
       {
         if(!await onDB(getPhoneNumber(message)))
         {
-          if (!isID(msg)) {
+          if (!isID(msg))
+          {
             return await sendMessageWTyping(sock, getJid(message), {
-              text: "Maaf, sepertinys NPM/NPP yang kamu masukkan salah 😓\nSilahkan masukkan NPM/NPP yang benar",
+              text: "Maaf, sepertinya NPM/NPP yang kamu masukkan salah 😓\nSilahkan masukkan NPM/NPP yang benar",
             });
           }
+
           await sendMessageWTyping(sock, getJid(message), {
             text: "Mohon tunggu sebentar ya, sedang mencari NPM/NPP anda... 🕵️‍♂️"
           });
@@ -53,7 +55,7 @@ class Menu {
         }
       }
 
-      if (msg === "2")
+      if (msg === "1")
       {
         if (await onDB(getPhoneNumber(message)))
         {
@@ -67,7 +69,7 @@ class Menu {
           msgCount++;
         }
       }
-      else if (msgCount === 1 && msg !== "1" && msg !== "2")
+      else if (msgCount === 1 && msg !== "1")
       {
         await sendMessageWTyping(sock, getJid(message), {
           text: "Maaf, BOLIA tidak mengerti perintahmu 😓\nSilahkan pilih menu yang tersedia\n\n_nb: masukkan angka saja ya 🤗_",

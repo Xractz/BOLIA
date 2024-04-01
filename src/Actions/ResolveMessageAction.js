@@ -20,7 +20,7 @@ class ResolveMessageAction {
         {
           for (const handler in historyHandler)
           {
-            if (handler == history)
+            if (handler === history)
             {
               await Handlers.execute(sock, message, history);
             }

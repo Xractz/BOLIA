@@ -66,9 +66,13 @@ const withDate = (data) => {
     tempData += `🏠 ${room}\n`;
     const time = data[room];
     if (Array.isArray(time)){
+      if (time.length === 0) {
+        tempData = tempData.replace(`🏠 ${room}\n`, "");
+      } else {
       time.forEach((time) => {
         tempData += `\t🕒 ${time}\n`;
       });
+      }
     }
     else {
       tempData = "";

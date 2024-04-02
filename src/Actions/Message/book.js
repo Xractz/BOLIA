@@ -1,4 +1,5 @@
 const { isDate, date } = require("../../supports/validate");
+const { setTempData } = require("../../supports/temp");
 const { updateData } = require("../../supports/database");
 const { available } = require("../../supports/fetch");
 const { 
@@ -22,15 +23,22 @@ class Book {
         await sendMessageWTyping(sock, getJid(message), {
           text: "Mohon tunggu sebentar ya, sedang mencari ruang yang tersedia... 🕵️‍♂️"
         });
+
+        const { availableRoom, room, time } = await available(msg);
+        setTempData({ phoneNumber: getPhoneNumber(message), room, time });
+        let tmpRoom = "", i = 1;
+        room.forEach((room) => {
+          tmpRoom += `\`${i}\` ${room}\n`
+          i++;
+        });
         
-        const availableRoom = await available(msg);
         if (availableRoom)
         {
           await sendMessageWTyping(sock, getJid(message), {
             text: `Ruang yang tersedia :\n\n📅 ${date(msg, true)}\n\n${availableRoom}`
           });
           await sendMessageWTyping(sock, getJid(message), {
-            text: "Silahkan pilih ruang yang ingin kamu pesan : \n\n`1` Discussion Room 1\n`2` Discussion Room 2\n`3` Discussion Room 3\n`4` Leisure Room 1",
+            text: `Silahkan pilih ruang yang ingin kamu pesan : \n\n${tmpRoom}`,
           });
           await updateData(getPhoneNumber(message), { history: "room", date: date(msg) });
         }

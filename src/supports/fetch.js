@@ -1,7 +1,8 @@
 const Data = require("../API/data");
-var tempData = "";
+var tempData = "", temp;
 
 const available = async (date) => {
+  temp = { "availableRoom": "", "room": [], "time": []}
   try {
     let data;
     if (!date) {
@@ -12,7 +13,8 @@ const available = async (date) => {
       withDate(data);
     }
 
-    return tempData;
+    temp["availableRoom"] = tempData;
+    return temp;
   } catch (error) {
     console.error("There has been a problem with your fetch operation:", error);
   }
@@ -64,15 +66,18 @@ const withDate = (data) => {
   tempData = "";
   for (const room in data) {
     tempData += `🏠 ${room}\n`;
+    temp["room"].push(room);
     const time = data[room];
     if (Array.isArray(time)){
       if (time.length === 0) {
         tempData = tempData.replace(`🏠 ${room}\n`, "");
       } else {
       time.forEach((time) => {
+        temp["time"].push(time);
         tempData += `\t🕒 ${time}\n`;
       });
       }
+      temp["time"] = [...new Set(temp["time"])];
     }
     else {
       tempData = "";

@@ -41,12 +41,12 @@ const onDB = async (message) => {
 };
 
 let data = async (phoneNumber) => {
-  return data = {
+  return (data = {
     npm: await checkData(phoneNumber, "npm"),
     room: await checkData(phoneNumber, "room"),
     date: await checkData(phoneNumber, "date"),
-    time: "",
-  };
+    time: await checkData(phoneNumber, "time"),
+  });
 }
 
 module.exports ={

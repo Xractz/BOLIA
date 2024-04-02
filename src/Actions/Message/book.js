@@ -19,6 +19,10 @@ class Book {
         });
       }
       else if (isDate(msg)){
+        await sendMessageWTyping(sock, getJid(message), {
+          text: "Mohon tunggu sebentar ya, sedang mencari ruang yang tersedia... 🕵️‍♂️"
+        });
+        
         const availableRoom = await available(msg);
         if (availableRoom)
         {

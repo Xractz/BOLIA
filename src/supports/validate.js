@@ -40,4 +40,8 @@ const isID = (id) => {
   return regex.test(id);
 };
 
-module.exports = { isDate, date, isID };
+const isValidInput = (input, data) => {
+  return input >= 1 && input <= data.length
+}
+
+module.exports = { isDate, date, isID, isValidInput };

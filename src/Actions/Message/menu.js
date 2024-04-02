@@ -8,15 +8,34 @@ const {
   getJid
 } = require("../../supports/message");
 var msgCount = 1,
-  onFetch,
-  data;
+onFetch,
+data;
 
 class Menu {
   async execute(sock, message) {
     try {
       const msg = getMessageCaption(message);
-
-      if (await onDB(getPhoneNumber(message))) { msgCount = 2 }
+      
+      if (msg === "1")
+      {
+        if (await onDB(getPhoneNumber(message)))
+        {
+          msgCount = 2;
+        }
+        else
+        {
+          await sendMessageWTyping(sock, getJid(message), {
+            text: "Masukkan NPM/NPP anda :",
+          });
+          return msgCount++;
+        }
+      }
+      else if (msgCount === 1 && msg != "1")
+      {
+        return await sendMessageWTyping(sock, getJid(message), {
+          text: "Maaf, BOLIA tidak mengerti perintahmu 😓\nSilahkan pilih menu yang tersedia\n\n_nb: masukkan angka saja ya 🤗_",
+        });
+      }
 
       if (msgCount === 2)
       {
@@ -55,26 +74,6 @@ class Menu {
         }
       }
 
-      if (msg === "1")
-      {
-        if (await onDB(getPhoneNumber(message)))
-        {
-          msgCount = 2;
-        }
-        else
-        {
-          await sendMessageWTyping(sock, getJid(message), {
-            text: "Masukkan NPM/NPP anda :",
-          });
-          msgCount++;
-        }
-      }
-      else if (msgCount === 1 && msg !== "1")
-      {
-        await sendMessageWTyping(sock, getJid(message), {
-          text: "Maaf, BOLIA tidak mengerti perintahmu 😓\nSilahkan pilih menu yang tersedia\n\n_nb: masukkan angka saja ya 🤗_",
-        });
-      }
     } catch (error) {
       console.error(error);
     }

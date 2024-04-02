@@ -14,6 +14,15 @@ const available = async (date) => {
     }
 
     temp["availableRoom"] = tempData;
+    temp["time"] = [...new Set(temp["time"])];
+    temp["time"].sort((a, b) => {
+      const [startA, endA] = a.split(" - ")[0].split(":");
+      const [startB, endB] = b.split(" - ")[0].split(":");
+
+      if (startA !== startB) return startA - startB;
+      return endA - endB;
+    });
+
     return temp;
   } catch (error) {
     console.error("There has been a problem with your fetch operation:", error);
@@ -77,7 +86,6 @@ const withDate = (data) => {
         tempData += `\t🕒 ${time}\n`;
       });
       }
-      temp["time"] = [...new Set(temp["time"])];
     }
     else {
       tempData = "";

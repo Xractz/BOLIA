@@ -3,6 +3,8 @@ const Menu = require("../Actions/Message/menu");
 const Book = require("../Actions/Message/book");
 const Room = require("../Actions/Message/room");
 const Time = require("../Actions/Message/time");
+const { getMessageCaption, getPhoneNumber } = require("../supports/message");
+const { updateData } = require("../supports/database");
 
 const historyHandler = {
   home: Home.execute,
@@ -17,7 +19,13 @@ class Handlers {
     try {
       const handler = historyHandler[history];
       if (handler) {
+        const msg = getMessageCaption(message);
+        if (msg === "0" || msg === "exit") {
+          await updateData(getPhoneNumber(message), { history: "home", room: "", date: "", time: ""});
+          return await Home.execute(sock, message);
+        } else {
         await handler(sock, message);
+        }
       }
     } catch (error) {
       console.error(error);

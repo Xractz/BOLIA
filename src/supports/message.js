@@ -16,6 +16,11 @@ const getTimeStamp = (message) => {
   return message?.messageTimestamp;
 };
 
+const getDateValid = (message) => {
+  var date = new Date(getTimeStamp(message) * 1000);
+  return `${(date.getDate() - 1).toString().padStart(2, "0")}/${(date.getMonth() + 1).toString().padStart(2, "0")}/${date.getFullYear()}`;
+};
+
 const setTimer = (message) => {
   return getTimeStamp(message) + 300;
 };
@@ -29,13 +34,7 @@ const isOnGroup = (message) => {
 };
 
 const getMessageCaption = (message) => {
-  return (
-    message?.conversation ||
-    message?.message?.conversation ||
-    message?.extendedTextMessage?.text ||
-    message?.message?.extendedTextMessage?.text ||
-    null
-  );
+  return message?.conversation || message?.message?.conversation || message?.extendedTextMessage?.text || message?.message?.extendedTextMessage?.text || null;
 };
 
 const getDate = () => {
@@ -62,6 +61,7 @@ module.exports = {
   getPhoneNumber,
   getMsgKey,
   getTimeStamp,
+  getDateValid,
   setTimer,
   isFromMe,
   isOnGroup,

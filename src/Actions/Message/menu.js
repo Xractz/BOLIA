@@ -40,7 +40,7 @@ class Menu {
           if (!isID(msg))
           {
             return await sendMessageWTyping(sock, getJid(message), {
-              text: "Maaf, sepertinya NPM/NPP yang kamu masukkan salah 😓\nSilahkan masukkan NPM/NPP yang benar",
+              text: "Maaf, sepertinya NPM/NPP yang kamu masukkan salah 😓\n\n> Silahkan masukkan NPM/NPP yang benar",
             });
           }
 

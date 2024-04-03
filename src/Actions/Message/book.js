@@ -16,7 +16,7 @@ class Book {
 
       if (!isDate(msg)) {
         await sendMessageWTyping(sock, getJid(message), {
-          text: "Maaf, format tanggal yang kamu masukkan salah 😓\nSilahkan masukkan tanggal dengan format :\n\n`ddmmyyyy`\n\nex: `01042024`",
+          text: "Maaf, format tanggal yang kamu masukkan salah 😓\nSilahkan masukkan tanggal dengan format :\n\n`ddmmyyyy`\n\nex: `01042024`\n\n> Silahkan masukkan tanggal yang sesuai",
         });
       }
       else if (isDate(msg)){

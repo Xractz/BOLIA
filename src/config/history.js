@@ -22,6 +22,9 @@ class Handlers {
       if (handler) {
         const msg = getMessageCaption(message);
         if (msg === "0" || msg === "exit") {
+          if (history === "menu") {
+            return await handler(sock, message);
+          }
           await Temp.deleteData(getPhoneNumber(message));
           await updateData(getPhoneNumber(message), { history: "home", room: "", date: "", time: ""});
           return await Home.execute(sock, message);

@@ -16,25 +16,21 @@ class Menu {
     try {
       const msg = getMessageCaption(message);
       
-      if (msg === "1")
-      {
-        if (await onDB(getPhoneNumber(message)))
-        {
+      if (msg === "1") {
+        if (await onDB(getPhoneNumber(message))) {
           msgCount = 2;
-        }
-        else
-        {
+        } else {
           await sendMessageWTyping(sock, getJid(message), {
             text: "Masukkan NPM/NPP anda :",
           });
-          return msgCount++;
+          return msgCount = 2;
         }
-      }
-      else if (msgCount === 1 && msg != "1")
-      {
+      } else if (msgCount === 1 && msg != "1") {
         return await sendMessageWTyping(sock, getJid(message), {
           text: "Maaf, BOLIA tidak mengerti perintahmu 😓\nSilahkan pilih menu yang tersedia\n\n_nb: masukkan angka saja ya 🤗_",
         });
+      } else if (msgCount === 0) {
+        msgCount = 1;
       }
 
       if (msgCount === 2)

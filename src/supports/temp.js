@@ -2,6 +2,15 @@ const fs = require("fs").promises;
 
 class Temp {
   constructor() {
+    (async () => {
+      const fileExists = await fs
+      .access(this.filename)
+      .then(() => true)
+      .catch(() => false);
+      if (!fileExists) {
+        await fs.writeFile(this.filename, "[]", "utf8");
+      }
+    })();
     this.filename = "./src/Temp/temp.json";
   }
 
@@ -17,15 +26,6 @@ class Temp {
 
   async createData(jsonData) {
     try {
-
-      const fileExists = await fs
-        .access(this.filename)
-        .then(() => true)
-        .catch(() => false);
-      if (!fileExists) {
-        await fs.writeFile(this.filename, "[]", "utf8");
-      }
-
       let data = [];
       const existingData = await fs.readFile(this.filename, "utf8");
       data = JSON.parse(existingData);

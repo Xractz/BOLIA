@@ -12,16 +12,28 @@
 // };
 
 const isDate = (date) => {
-  const year = new Date().getFullYear();
-  const month = new Date().getMonth() + 1;
-  const day = new Date().getDate();
+  const currentDate = new Date();
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth() + 1;
+  const day = currentDate.getDate();
+
   if (date.length === 8 && !isNaN(date)) {
-    if (date.substring(0, 2) <= 31 && date.substring(2, 4) <= 12 && date.substring(4, 8) >= year && date.substring(2, 4) >= month) {
-      return true;
+    const inputYear = parseInt(date.substring(4, 8));
+    const inputMonth = parseInt(date.substring(2, 4));
+    const inputDay = parseInt(date.substring(0, 2));
+    if (inputDay <= 31 && inputMonth <= 12 && inputYear >= year && inputMonth >= month) {
+      if (inputMonth === month) {
+        if (inputDay >= day) {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return true;
+      }
     }
-  } else {
-    return false;
   }
+  return false;
 };
 
 const date = (date, status) => {

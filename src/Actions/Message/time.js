@@ -1,6 +1,6 @@
 const { updateData, data, checkData } = require("../../supports/database");
 const { isValidInput } = require("../../supports/validate");
-const { getTempData, deleteTempData } = require("../../supports/temp");
+const Temp = require("../../supports/temp");
 const { booking } = require("../../supports/fetch");
 const { sendMessageWTyping, getMessageCaption, getPhoneNumber, getJid } = require("../../supports/message");
 
@@ -8,10 +8,10 @@ class Time {
   async execute(sock, message) {
     try {
       const msg = getMessageCaption(message);
-      const { time } = getTempData(getPhoneNumber(message));
+      const { listTime } = await Temp.readList(getPhoneNumber(message));
 
-      if (isValidInput(msg, time)) {
-        await updateData(getPhoneNumber(message), { history: "time", time: time[msg - 1] });
+      if (isValidInput(msg, listTime)) {
+        await updateData(getPhoneNumber(message), { history: "time", time: listTime[msg - 1] });
         const dataUser = await data(getPhoneNumber(message));
         const response = await booking(dataUser);
         const responseMsg = response.data.message;
@@ -31,7 +31,7 @@ class Time {
           await sendMessageWTyping(sock, getJid(message), {
             text: "Terimakasih telah menggunakan layanan kami 🥰",
           });
-          deleteTempData(getPhoneNumber(message));
+          await Temp.deleteData(getPhoneNumber(message));
           await updateData(getPhoneNumber(message), { history: "home", status: "offline", timer: 0, room: "", date: "", time: "" });
         }
         else if (responseMsg === "Waktu yang anda pilih sudah dibooking, silahkan memilih waktu yang kosong")
@@ -50,7 +50,7 @@ class Time {
       else
       {
         await sendMessageWTyping(sock, getJid(message), {
-          text: `Maaf, waktu yang kamu pilih tidak sesuai\nSilahkan pilih waktu yang tersedia (1-${time.length})`,
+          text: `Maaf, waktu yang kamu pilih tidak sesuai\nSilahkan pilih waktu yang tersedia (1-${listTime.length})`,
         });
       }
     } catch (error) {

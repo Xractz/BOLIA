@@ -1,5 +1,5 @@
 const { isDate, date } = require("../../supports/validate");
-const { setTempData } = require("../../supports/temp");
+const Temp = require("../../supports/temp");
 const { updateData } = require("../../supports/database");
 const { available } = require("../../supports/fetch");
 const { 
@@ -24,13 +24,14 @@ class Book {
           text: "Mohon tunggu sebentar ya, sedang mencari ruang yang tersedia... 🕵️‍♂️"
         });
 
-        const { availableRoom, room, time } = await available(msg);
-        setTempData({ phoneNumber: getPhoneNumber(message), room, time });
-        let tmpRoom = "", i = 1;
-        room.forEach((room) => {
+        const { availableRoom, rooms } = await available(msg);
+        let tmpRoom = "", listRoom = [], i = 1;
+        for (const room in rooms) {
           tmpRoom += `\`${i}\` ${room}\n`
+          listRoom.push(room);
           i++;
-        });
+        }
+        await Temp.createData({ phoneNumber: getPhoneNumber(message), rooms, listRoom });
         
         if (availableRoom)
         {

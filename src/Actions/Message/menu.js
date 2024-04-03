@@ -1,5 +1,5 @@
 const { updateData, checkData, onDB } = require("../../supports/database");
-const { available, getNPM } = require("../../supports/fetch");
+const { getNPM } = require("../../supports/fetch");
 const { isID } = require("../../supports/validate");
 const { 
   sendMessageWTyping, 

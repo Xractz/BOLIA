@@ -30,7 +30,7 @@ class Database {
       const existingData = await fs.readFile(this.filename, "utf8");
       data = JSON.parse(existingData);
       data.push(jsonData);
-      await fs.writeFile(this.filename, JSON.stringify(data, null, 4), "utf8");
+      await fs.writeFile(this.filename, JSON.stringify(data, null, 2), "utf8");
       return true;
     } catch (error) {
       console.error(error);
@@ -57,7 +57,7 @@ class Database {
       });
 
       if (modified) {
-        await fs.writeFile(this.filename, JSON.stringify(jsonData, null, 4), "utf8");
+        await fs.writeFile(this.filename, JSON.stringify(jsonData, null, 2), "utf8");
         return true;
       } else {
         return false;

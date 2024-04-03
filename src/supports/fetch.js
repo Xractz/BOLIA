@@ -1,8 +1,8 @@
 const Data = require("../API/data");
-var tempData = "", temp;
+var tempData = "", temp, tempTime;
 
 const available = async (date) => {
-  temp = { "availableRoom": "", "room": [], "time": []}
+  temp = { "availableRoom": "", "rooms": {} }
   try {
     let data;
     if (!date) {
@@ -12,16 +12,7 @@ const available = async (date) => {
       data = await Data.getRoom({ method: "available", date });
       withDate(data);
     }
-
     temp["availableRoom"] = tempData;
-    temp["time"] = [...new Set(temp["time"])];
-    temp["time"].sort((a, b) => {
-      const [startA, endA] = a.split(" - ")[0].split(":");
-      const [startB, endB] = b.split(" - ")[0].split(":");
-
-      if (startA !== startB) return startA - startB;
-      return endA - endB;
-    });
 
     return temp;
   } catch (error) {
@@ -74,17 +65,18 @@ const getNPM = async (npm) => {
 const withDate = (data) => {
   tempData = "";
   for (const room in data) {
+    tempTime = [];
     tempData += `🏠 ${room}\n`;
-    temp["room"].push(room);
     const time = data[room];
     if (Array.isArray(time)){
       if (time.length === 0) {
         tempData = tempData.replace(`🏠 ${room}\n`, "");
       } else {
-      time.forEach((time) => {
-        temp["time"].push(time);
-        tempData += `\t🕒 ${time}\n`;
-      });
+        time.forEach((time) => {
+          tempData += `\t🕒 ${time}\n`;
+          tempTime.push(time);
+        });
+        temp.rooms[room] = tempTime;
       }
     }
     else {

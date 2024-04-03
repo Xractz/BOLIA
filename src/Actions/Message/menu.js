@@ -65,7 +65,7 @@ class Menu {
         }
         else
         {
-          const text = "Maaf, NPM/NPP yang kamu masukkan tidak terdaftar di Database LIB UAJY 😓\nSilahkan masukkan NPM/NPP yang lain";
+          const text = "Maaf, NPM/NPP yang kamu masukkan tidak terdaftar di Database LIB UAJY 😓\n\n> Silahkan masukkan NPM/NPP yang lain";
           await sendMessageWTyping(sock, getJid(message), { text });
         }
       }

@@ -56,7 +56,12 @@ const getNPM = async (npm) => {
     };
 
     const response = await booking(data);
-    return { name: response.data.name, npm: response.data.npm };
+    if (response.data === "NPM/NPP Not found") {
+      return false;
+    } 
+    else {
+      return { name: response.data.name, npm: response.data.npm };
+    }
   } catch (error) {
     console.error("There has been a problem with your fetch operation:", error);
   }

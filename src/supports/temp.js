@@ -17,6 +17,7 @@ class Temp {
 
   async createData(jsonData) {
     try {
+
       const fileExists = await fs
         .access(this.filename)
         .then(() => true)
@@ -28,11 +29,26 @@ class Temp {
       let data = [];
       const existingData = await fs.readFile(this.filename, "utf8");
       data = JSON.parse(existingData);
-      jsonData.listRoom = jsonData.listRoom !== undefined ? jsonData.listRoom : "";
-      jsonData.listTime = jsonData.listTime !== undefined ? jsonData.listTime : "";
-      data.push(jsonData);
-      await fs.writeFile(this.filename, JSON.stringify(data, null, 2), "utf8");
-      return true;
+
+      let modified = false;
+      data.forEach((entry) => {
+        if (entry.phoneNumber === jsonData.phoneNumber) {
+          console.log("Data already exists");
+          entry.rooms = jsonData.rooms !== undefined ? jsonData.rooms : entry.rooms;
+          entry.listRoom = jsonData.listRoom !== undefined ? jsonData.listRoom : entry.listRoom;
+          entry.listTime = jsonData.listTime !== undefined ? jsonData.listTime : entry.listTime;
+          modified = true;
+        }
+      });
+
+      if(modified) {
+        return await fs.writeFile(this.filename, JSON.stringify(data, null, 2), "utf8");
+      } else {
+        jsonData.listRoom = jsonData.listRoom !== undefined ? jsonData.listRoom : "";
+        jsonData.listTime = jsonData.listTime !== undefined ? jsonData.listTime : "";
+        data.push(jsonData);
+        return await fs.writeFile(this.filename, JSON.stringify(data, null, 2), "utf8");
+      }
     } catch (error) {
       console.error(error);
       throw error;

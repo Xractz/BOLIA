@@ -4,16 +4,11 @@ const {
   getPhoneNumber, 
   getJid 
 } = require("../../supports/message");
-var name;
 class Home {
   async execute(sock, message) {
     try {
       const status = await onDB(getPhoneNumber(message));
-
-      if (status)
-      {
-        name = await checkData(getPhoneNumber(message), "name");
-      }
+      const name = status ? await checkData(getPhoneNumber(message), "name") : "";
 
       const text = status
         ? `Halo, ${name}\n\nSelamat datang kembali di *BOLIA*\nUnoffical BOT Library UAJY\n\nSilahkan memilih menu di bawah ini :\n\n\t\`1\` Pesan ruang\n\n> Untuk keluar dari menu, ketik *0* atau *exit*`

@@ -33,7 +33,6 @@ class Temp {
       let modified = false;
       data.forEach((entry) => {
         if (entry.phoneNumber === jsonData.phoneNumber) {
-          console.log("Data already exists");
           entry.rooms = jsonData.rooms !== undefined ? jsonData.rooms : entry.rooms;
           entry.listRoom = jsonData.listRoom !== undefined ? jsonData.listRoom : entry.listRoom;
           entry.listTime = jsonData.listTime !== undefined ? jsonData.listTime : entry.listTime;

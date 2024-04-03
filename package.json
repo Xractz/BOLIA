@@ -9,7 +9,8 @@
   "nodemonConfig": {
     "ignore": [
       "src/session/*",
-      "src/Database/*"
+      "src/Database/*",
+      "src/Temp/*"
     ]
   },
   "keywords": [

@@ -1,5 +1,6 @@
-const { isDate, date } = require("../../supports/validate");
 const Temp = require("../../supports/temp");
+const { isDate, date } = require("../../supports/validate");
+const { getDateValid } = require("../../supports/message");
 const { updateData } = require("../../supports/database");
 const { available } = require("../../supports/fetch");
 const { 
@@ -16,7 +17,7 @@ class Book {
 
       if (!isDate(msg)) {
         await sendMessageWTyping(sock, getJid(message), {
-          text: "Maaf, format tanggal yang kamu masukkan salah 😓\nSilahkan masukkan tanggal dengan format :\n\n`ddmmyyyy`\n\nex: `01042024`\n\n> Silahkan masukkan tanggal yang sesuai",
+          text: `Maaf, format tanggal yang kamu masukkan salah 😓\nSilahkan masukkan tanggal dengan format :\n\n\`ddmmyyyy\`\n\nex: \`01042024\`\n\n> Silahkan masukkan tanggal diatas tanggal : ${getDateValid(message)}`,
         });
       }
       else if (isDate(msg)){

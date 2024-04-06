@@ -1,16 +1,3 @@
-// const { checkData, updateData } = require('./database');
-// const { getRawData } = require('./message');
-
-// const validate = async ( phoneNumber ) => {
-//   const data = await checkData(phoneNumber, "phoneNumber");
-//   if (data) {
-//     return true;
-//   }
-//   else {
-//     await updateData(phoneNumber, getRawData(phoneNumber));
-//   }
-// };
-
 const isDate = (date) => {
   const currentDate = new Date();
   const year = currentDate.getFullYear();
@@ -22,18 +9,15 @@ const isDate = (date) => {
     const inputMonth = parseInt(date.substring(2, 4));
     const inputDay = parseInt(date.substring(0, 2));
     if (inputDay <= 31 && inputMonth <= 12 && inputYear >= year && inputMonth >= month) {
-      if (inputMonth === month) {
-        if (inputDay >= day) {
-          return true;
-        } else {
-          return false;
-        }
+      if (inputMonth === month && inputDay >= day) {
+        return "Eligible";
       } else {
-        return true;
+        return "Wrong day!";
       }
     }
+    return "Wrong date!";
   }
-  return false;
+  return "Wrong format!";
 };
 
 const date = (date, status) => {

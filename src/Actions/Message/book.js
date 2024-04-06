@@ -1,8 +1,8 @@
 const Temp = require("../../supports/temp");
 const { isDate, date } = require("../../supports/validate");
-const { getDateValid } = require("../../supports/message");
 const { updateData } = require("../../supports/database");
 const { available } = require("../../supports/fetch");
+const { getDateValid, getDate } = require("../../supports/message");
 const { 
   sendMessageWTyping,
   getMessageCaption,
@@ -14,13 +14,19 @@ class Book {
   async execute(sock, message) {
     try {
       const msg = getMessageCaption(message);
+      const text =
+        isDate(msg) === "Wrong day!"
+          ? `Maaf, tanggal yang kamu masukkan salah 😓\n\n> Masukkan tanggal diatas tanggal : ${getDateValid(message)}`
+          : isDate(msg) === "Wrong format!"
+          ? `Maaf, format tanggal yang kamu masukkan salah 😓\nMasukkan tanggal dengan format :\n\n\`ddmmyyyy\`\n\nex: \`0${getDate(message).replace(/\//g, "")}\``
+          : isDate(msg) === "Wrong date!"
+          ? `Maaf, format tanggal yang kamu masukkan salah 😓\n\n> Cek kembali tanggal, bulan, dan tahun anda.\n> Silahkan masukkan tanggal diatas tanggal : ${getDateValid(message)}`
+          : `Maaf, format tanggal yang kamu masukkan salah 😓\nMasukkan tanggal dengan format :\n\n\`ddmmyyyy\`\n\nex: \`0${getDate(message).replace(/\//g, "")}\``;
 
-      if (!isDate(msg)) {
-        await sendMessageWTyping(sock, getJid(message), {
-          text: `Maaf, format tanggal yang kamu masukkan salah 😓\nSilahkan masukkan tanggal dengan format :\n\n\`ddmmyyyy\`\n\nex: \`01042024\`\n\n> Silahkan masukkan tanggal diatas tanggal : ${getDateValid(message)}`,
-        });
+      if (isDate(msg) !== "Eligible") {
+        await sendMessageWTyping(sock, getJid(message), { text });
       }
-      else if (isDate(msg)){
+      else if (isDate(msg) === "Eligible"){
         await sendMessageWTyping(sock, getJid(message), {
           text: "Mohon tunggu sebentar ya, sedang mencari ruang yang tersedia... 🕵️‍♂️"
         });

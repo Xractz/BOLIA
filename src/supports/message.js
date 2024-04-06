@@ -50,10 +50,16 @@ const isClient = (message) => {
 const sendMessageWTyping = async (sock, jid, msg) => {
   await delay(500);
   await sock.sendPresenceUpdate("composing", jid);
-  await delay(2000);
+  await delay(3000);
   await sock.sendPresenceUpdate("paused", jid);
   await sock.sendMessage(jid, msg);
 };
+
+const randDelay = async () => {
+  let listTime = [3000, 4000, 5000, 6000];
+  listTime = listTime[Math.floor(Math.random() * listTime.length)];
+  await delay(listTime);
+}
 
 module.exports = {
   getJid,
@@ -68,4 +74,5 @@ module.exports = {
   getDate,
   isClient,
   sendMessageWTyping,
+  randDelay
 };

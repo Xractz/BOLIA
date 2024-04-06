@@ -1,6 +1,7 @@
 const { updateData, checkData, onDB } = require("../../../supports/database");
 const { getNPM } = require("../../../supports/fetch");
 const { isID } = require("../../../supports/validate");
+const { getDate } = require("../../../supports/message");
 const { sendMessageWTyping, getMessageCaption, getPhoneNumber, getJid } = require("../../../supports/message");
 var msgCount = 1,
   onFetch,
@@ -49,8 +50,8 @@ class Menu {
           await updateData(getPhoneNumber(message), { name, npm });
 
           const text = onFetch
-            ? `Halo, ${onFetch}\n\nSilahkan pilih tanggal yang ingin kamu pesan dengan mengetikkan tanggal dengan format :\n\n\`ddmmyyyy\`\n\nex: \`01042024\``
-            : `Silahkan pilih tanggal yang ingin kamu pesan dengan mengetikkan tanggal dengan format :\n\n\`ddmmyyyy\`\n\nex: \`01042024\``;
+            ? `Halo, ${onFetch}\n\nSilahkan pilih tanggal yang ingin kamu pesan dengan mengetikkan tanggal dengan format :\n\n\`ddmmyyyy\`\n\nex: \`0${getDate(message).replace(/\//g, "")}\``
+            : `Silahkan pilih tanggal yang ingin kamu pesan dengan mengetikkan tanggal dengan format :\n\n\`ddmmyyyy\`\n\nex: \`0${getDate(message).replace(/\//g, "")}\``;
 
           await updateData(getPhoneNumber(message), { history: "book" });
           msgCount--;

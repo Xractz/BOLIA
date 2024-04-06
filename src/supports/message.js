@@ -48,7 +48,6 @@ const isClient = (message) => {
 };
 
 const sendMessageWTyping = async (sock, jid, msg) => {
-  await sock.presenceSubscribe(jid);
   await delay(500);
   await sock.sendPresenceUpdate("composing", jid);
   await delay(2000);

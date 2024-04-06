@@ -4,7 +4,7 @@ const Book = require("../Actions/Message/book");
 const Room = require("../Actions/Message/room");
 const Time = require("../Actions/Message/time");
 const Temp = require("../supports/temp")
-const { getMessageCaption, getPhoneNumber } = require("../supports/message");
+const { getMessageCaption, getPhoneNumber, getMsgKey } = require("../supports/message");
 const { updateData } = require("../supports/database");
 
 const historyHandler = {
@@ -20,6 +20,7 @@ class Handlers {
     try {
       const handler = historyHandler[history];
       if (handler) {
+        sock.readMessages([getMsgKey(message)]);
         const msg = getMessageCaption(message);
         if (msg === "0" || msg === "exit") {
           if (history === "menu") {

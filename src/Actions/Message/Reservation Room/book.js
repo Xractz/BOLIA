@@ -1,14 +1,9 @@
-const Temp = require("../../supports/temp");
-const { isDate, date } = require("../../supports/validate");
-const { updateData } = require("../../supports/database");
-const { available } = require("../../supports/fetch");
-const { getDateValid, getDate } = require("../../supports/message");
-const { 
-  sendMessageWTyping,
-  getMessageCaption,
-  getPhoneNumber,
-  getJid
-} = require("../../supports/message");
+const Temp = require("../../../supports/temp");
+const { isDate, date } = require("../../../supports/validate");
+const { updateData } = require("../../../supports/database");
+const { available } = require("../../../supports/fetch");
+const { getDateValid, getDate } = require("../../../supports/message");
+const { sendMessageWTyping, getMessageCaption, getPhoneNumber, getJid } = require("../../../supports/message");
 
 class Book {
   async execute(sock, message) {
@@ -25,40 +20,36 @@ class Book {
 
       if (isDate(msg) !== "Eligible") {
         await sendMessageWTyping(sock, getJid(message), { text });
-      }
-      else if (isDate(msg) === "Eligible"){
+      } else if (isDate(msg) === "Eligible") {
         await sendMessageWTyping(sock, getJid(message), {
-          text: "Mohon tunggu sebentar ya, sedang mencari ruang yang tersedia... 🕵️‍♂️"
+          text: "Mohon tunggu sebentar ya, sedang mencari ruang yang tersedia... 🕵️‍♂️",
         });
 
         const { availableRoom, rooms } = await available(msg);
-        let tmpRoom = "", listRoom = [], i = 1;
+        let tmpRoom = "",
+          listRoom = [],
+          i = 1;
         for (const room in rooms) {
-          tmpRoom += `\`${i}\` ${room}\n`
+          tmpRoom += `\`${i}\` ${room}\n`;
           listRoom.push(room);
           i++;
         }
         await Temp.createData({ phoneNumber: getPhoneNumber(message), rooms, listRoom });
-        
-        if (availableRoom)
-        {
+
+        if (availableRoom) {
           await sendMessageWTyping(sock, getJid(message), {
-            text: `Ruang yang tersedia :\n\n📅 ${date(msg, true)}\n\n${availableRoom}`
+            text: `Ruang yang tersedia :\n\n📅 ${date(msg, true)}\n\n${availableRoom}`,
           });
           await sendMessageWTyping(sock, getJid(message), {
             text: `Silahkan pilih ruang yang ingin kamu pesan : \n\n${tmpRoom}`,
           });
           await updateData(getPhoneNumber(message), { history: "room", date: date(msg) });
-        }
-        else
-        {
+        } else {
           await sendMessageWTyping(sock, getJid(message), {
             text: `Tidak ada ruang dan waktu yang tersedia pada ${date(msg, true)}`,
           });
         }
       }
-
-      
     } catch (error) {
       console.error(error);
     }

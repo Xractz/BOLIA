@@ -1,7 +1,7 @@
-const { updateData } = require("../../supports/database");
-const Temp = require("../../supports/temp");
-const { isValidInput } = require("../../supports/validate");
-const { sendMessageWTyping, getMessageCaption, getPhoneNumber, getJid } = require("../../supports/message");
+const { updateData } = require("../../../supports/database");
+const Temp = require("../../../supports/temp");
+const { isValidInput } = require("../../../supports/validate");
+const { sendMessageWTyping, getMessageCaption, getPhoneNumber, getJid } = require("../../../supports/message");
 class Room {
   async execute(sock, message) {
     try {
@@ -9,7 +9,9 @@ class Room {
       const { rooms, listRoom } = await Temp.readList(getPhoneNumber(message));
 
       if (isValidInput(msg, listRoom)) {
-        let tmpTime = "", listTime = [], i = 1;
+        let tmpTime = "",
+          listTime = [],
+          i = 1;
         rooms[listRoom[msg - 1]].forEach((time) => {
           tmpTime += `\`${i}\` ${time}\n`;
           listTime.push(time);

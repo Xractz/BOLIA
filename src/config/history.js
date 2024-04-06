@@ -1,8 +1,8 @@
-const Home = require("../Actions/Message/home");
-const Menu = require("../Actions/Message/menu");
-const Book = require("../Actions/Message/book");
-const Room = require("../Actions/Message/room");
-const Time = require("../Actions/Message/time");
+const Home = require("../Actions/Message/Reservation Room/home");
+const Menu = require("../Actions/Message/Reservation Room/menu");
+const Book = require("../Actions/Message/Reservation Room/book");
+const Room = require("../Actions/Message/Reservation Room/room");
+const Time = require("../Actions/Message/Reservation Room/time");
 const Temp = require("../supports/temp")
 const { updateData } = require("../supports/database");
 const { getMessageCaption, getPhoneNumber, getMsgKey, randDelay } = require("../supports/message");

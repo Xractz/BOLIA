@@ -1,9 +1,5 @@
-const { updateData, onDB, checkData } = require("../../supports/database");
-const { 
-  sendMessageWTyping, 
-  getPhoneNumber, 
-  getJid 
-} = require("../../supports/message");
+const { updateData, onDB, checkData } = require("../../../supports/database");
+const { sendMessageWTyping, getPhoneNumber, getJid } = require("../../../supports/message");
 class Home {
   async execute(sock, message) {
     try {

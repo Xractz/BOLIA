@@ -13,10 +13,10 @@ class Book {
         isDate(msg) === "Wrong day!"
           ? `Maaf, tanggal yang kamu masukkan salah 😓\n\n> Masukkan tanggal diatas tanggal : ${getDateValid(message)}`
           : isDate(msg) === "Wrong format!"
-          ? `Maaf, format tanggal yang kamu masukkan salah 😓\nMasukkan tanggal dengan format :\n\n\`ddmmyyyy\`\n\nex: \`0${getDate(message).replace(/\//g, "")}\``
+          ? `Maaf, format tanggal yang kamu masukkan salah 😓\nMasukkan tanggal dengan format :\n\n\`ddmmyyyy\`\n\nex: \`${getDate(message).replace(/\//g, "").padStart(2, "0")}\``
           : isDate(msg) === "Wrong date!"
           ? `Maaf, format tanggal yang kamu masukkan salah 😓\n\n> Cek kembali tanggal, bulan, dan tahun anda.\n> Silahkan masukkan tanggal diatas tanggal : ${getDateValid(message)}`
-          : `Maaf, format tanggal yang kamu masukkan salah 😓\nMasukkan tanggal dengan format :\n\n\`ddmmyyyy\`\n\nex: \`0${getDate(message).replace(/\//g, "")}\``;
+          : `Maaf, format tanggal yang kamu masukkan salah 😓\nMasukkan tanggal dengan format :\n\n\`ddmmyyyy\`\n\nex: \`${getDate(message).replace(/\//g, "").padStart(2, "0")}\``;
 
       if (isDate(msg) !== "Eligible") {
         await sendMessageWTyping(sock, getJid(message), { text });

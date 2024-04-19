@@ -1,5 +1,7 @@
 const Data = require("../API/data");
-var tempData = "", temp, tempTime;
+var tempData = "", 
+  temp, 
+  tempTime;
 
 const available = async (date) => {
   temp = { "availableRoom": "", "rooms": {} }
@@ -40,6 +42,35 @@ const booked = async (date) => {
 const booking = async (data) => {
   try {
     const response = await Data.bookRoom(data);
+    return response;
+  } catch (error) {
+    console.error("There has been a problem with your fetch operation:", error);
+  }
+};
+
+const turnitinStatus = async (npm) => {
+  try {
+    const response = await Data.turnitinStatus({ npm: npm });
+    const { data: { message } } = response;
+    
+    if (message === "Oooops..  NPM tidak terdaftar") {
+      return false;
+    }
+    
+    return turnitinStatusMessage(response);
+  } catch (error) {
+    console.error("There has been a problem with your fetch operation:", error);
+  }
+}
+
+const turnitinUploadDocument = async (npm, title, media) => {
+  try {
+    let formData = new FormData();
+    formData.append("npm", npm);
+    formData.append("title", title);
+    formData.append("file", media);
+    
+    const response = await Data.uploadDocument(formData);
     return response;
   } catch (error) {
     console.error("There has been a problem with your fetch operation:", error);
@@ -105,4 +136,15 @@ const withoutDate = (data) => {
   }
 };
 
-module.exports = { available, booked, booking, getNPM };
+const turnitinStatusMessage = (response) => {
+  let message = "";
+
+  for (const row in response.data) {
+    const { status, title } = response.data[row];
+    message += `\n\n📚 Judul : *${title}*\n📝 Status : _${status}_`;
+  }
+
+  return message;
+};
+
+module.exports = { available, booked, booking, getNPM, turnitinStatus, turnitinUploadDocument };

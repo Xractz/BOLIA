@@ -61,6 +61,24 @@ const randDelay = async () => {
   await delay(listTime);
 }
 
+const isDocumentEligible = (message) => {
+  try {
+    const pattern = message?.message?.documentMessage?.mimetype || message?.documentMessage?.mimetype || null;
+    let fileName = message?.message?.documentMessage?.fileName || message?.documentMessage?.fileName || null;
+    fileName = fileName.toLowerCase().split(".").pop();
+    const eligibleDocument = ["pdf", "doc", "docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/pdf"];
+    if (eligibleDocument.includes(pattern) && eligibleDocument.includes(fileName)) {
+      return true;
+    } 
+    else {
+      return false;
+    }
+  }
+  catch (error) {
+    return false;
+  }
+}
+
 module.exports = {
   getJid,
   getPhoneNumber,
@@ -74,5 +92,6 @@ module.exports = {
   getDate,
   isClient,
   sendMessageWTyping,
-  randDelay
+  randDelay,
+  isDocumentEligible,
 };

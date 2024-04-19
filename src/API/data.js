@@ -30,6 +30,38 @@ class Data {
       console.error("There has been a problem with your fetch operation:", error);
     }
   }
+
+  async turnitinStatus(data) {
+    try {
+      const response = await Fetch.post("https://lib-uajy.vercel.app/turnitin/status", data);
+      return response;
+    } catch (error) {
+      console.error("There has been a problem with your fetch operation:", error);
+    }
+  }
+
+  async uploadDocument(data) {
+    try {
+      const uploadUrl = "https://lib-uajy.vercel.app/turnitin";
+
+      const options = {
+        method: "POST",
+        body: data,
+      };
+
+      const response = await fetch(uploadUrl, options);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+      console.log("Upload successful:", data);
+
+      return response;
+    } catch (error) {
+      console.error("There has been a problem with your fetch operation:", error);
+    }
+  }
 }
 
 module.exports = new Data();

@@ -8,10 +8,19 @@ const isDate = (date) => {
     const inputYear = parseInt(date.substring(4, 8));
     const inputMonth = parseInt(date.substring(2, 4));
     const inputDay = parseInt(date.substring(0, 2));
-    if (inputDay <= 31 && inputMonth <= 12 && inputYear >= year && inputMonth >= month) {
+
+    if (inputMonth === 2 && inputDay > 28) {
+      return "Wrong day!";
+    }
+
+    if (inputDay <= 31 && inputMonth <= 12 && inputYear >= year) {
       if (inputMonth === month && inputDay >= day) {
         return "Eligible";
-      } else {
+      } 
+      else if (inputYear >= year) {
+        return "Eligible";
+      }
+      else {
         return "Wrong day!";
       }
     }

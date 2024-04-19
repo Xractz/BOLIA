@@ -23,7 +23,7 @@ class Handlers {
     try {
       const handler = historyHandler[history];
       if (handler) {
-        // await randDelay();
+        await randDelay();
         sock.readMessages([getMsgKey(message)]);
         const msg = getMessageCaption(message);
         if (msg === "0" || msg === "exit") {

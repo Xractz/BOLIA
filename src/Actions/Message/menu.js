@@ -1,10 +1,11 @@
-const { updateData, checkData, onDB } = require("../../../supports/database");
-const { getNPM } = require("../../../supports/fetch");
-const { isID } = require("../../../supports/validate");
-const { getDate } = require("../../../supports/message");
-const { sendMessageWTyping, getMessageCaption, getPhoneNumber, getJid } = require("../../../supports/message");
-var msgCount = 1,
+const { updateData, checkData, onDB } = require("../../supports/database");
+const { getNPM } = require("../../supports/fetch");
+const { isID } = require("../../supports/validate");
+const { getDate } = require("../../supports/message");
+const { sendMessageWTyping, getMessageCaption, getPhoneNumber, getJid } = require("../../supports/message");
+var onNPM = false,
   onFetch,
+  isTurnitin,
   data;
 
 class Menu {
@@ -12,24 +13,24 @@ class Menu {
     try {
       const msg = getMessageCaption(message);
 
-      if (msg === "1") {
+      if (msg === "1" || msg === "2") {
         if (await onDB(getPhoneNumber(message))) {
-          msgCount = 2;
+          onNPM = true;
+          isTurnitin = msg === "2" ? true : false;
         } else {
+          isTurnitin = msg === "2" ? true : false;
           await sendMessageWTyping(sock, getJid(message), {
             text: "Masukkan NPM/NPP anda :",
           });
-          return (msgCount = 2);
+          return (onNPM = true);
         }
-      } else if (msgCount === 1 && msg != "1") {
+      } else if (!onNPM && msg != "1" && msg != "2") {
         return await sendMessageWTyping(sock, getJid(message), {
           text: "Maaf, BOLIA tidak mengerti perintahmu 😓\nSilahkan pilih menu yang tersedia\n\n_nb: masukkan angka saja ya 🤗_",
         });
-      } else if (msgCount === 0) {
-        msgCount = 1;
       }
 
-      if (msgCount === 2) {
+      if (onNPM) {
         if (!(await onDB(getPhoneNumber(message)))) {
           if (!isID(msg)) {
             return await sendMessageWTyping(sock, getJid(message), {
@@ -49,13 +50,20 @@ class Menu {
           const npm = (await checkData(getPhoneNumber(message), "npm")) || data.npm;
           await updateData(getPhoneNumber(message), { name, npm });
 
-          const text = onFetch
-            ? `Halo, ${onFetch}\n\nSilahkan pilih tanggal yang ingin kamu pesan dengan mengetikkan tanggal dengan format :\n\n\`ddmmyyyy\`\n\nex: \`0${getDate(message).replace(/\//g, "")}\``
-            : `Silahkan pilih tanggal yang ingin kamu pesan dengan mengetikkan tanggal dengan format :\n\n\`ddmmyyyy\`\n\nex: \`0${getDate(message).replace(/\//g, "")}\``;
+          if (isTurnitin) {
+            const text = onFetch ? `Halo, ${onFetch}\n\nSilahkan pilih menu dibawah ini :\n\n1. Status\n2. Upload dokumen` : `Silahkan pilih menu dibawah ini :\n\n1. Status\n2. Upload dokumen`;
+            await sendMessageWTyping(sock, getJid(message), { text });
 
+            return await updateData(getPhoneNumber(message), { history: "Thome" });
+          }
+
+          const text = onFetch
+            ? `Halo, ${onFetch}\n\nSilahkan pilih tanggal yang ingin kamu pesan dengan mengetikkan tanggal dengan format :\n\n\`ddmmyyyy\`\n\nex: \`${getDate(message).replace(/\//g, "").padStart(2,'0')}\``
+            : `Silahkan pilih tanggal yang ingin kamu pesan dengan mengetikkan tanggal dengan format :\n\n\`ddmmyyyy\`\n\nex: \`${getDate(message).replace(/\//g, "").padStart(2,'0')}\``;
+
+          await sendMessageWTyping(sock, getJid(message), { text });
           await updateData(getPhoneNumber(message), { history: "book" });
-          msgCount--;
-          return await sendMessageWTyping(sock, getJid(message), { text });
+          return (onNPM = false);
         } else {
           const text = "Maaf, NPM/NPP yang kamu masukkan tidak terdaftar di Database LIB UAJY 😓\n\n> Silahkan masukkan NPM/NPP yang lain";
           await sendMessageWTyping(sock, getJid(message), { text });

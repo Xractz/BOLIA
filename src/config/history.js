@@ -1,18 +1,21 @@
-const Home = require("../Actions/Message/Reservation Room/home");
-const Menu = require("../Actions/Message/Reservation Room/menu");
-const Book = require("../Actions/Message/Reservation Room/book");
-const Room = require("../Actions/Message/Reservation Room/room");
-const Time = require("../Actions/Message/Reservation Room/time");
-const Temp = require("../supports/temp")
+const { execute: home } = require("../Actions/Message/home");
+const { execute: menu } = require("../Actions/Message/menu");
+const { execute: book } = require("../Actions/Message/Reservation Room/book");
+const { execute: room } = require("../Actions/Message/Reservation Room/room");
+const { execute: time } = require("../Actions/Message/Reservation Room/time");
+const { execute: Thome } = require("../Actions/Message/Turnitin/home");
+
+const Temp = require("../supports/temp");
 const { updateData } = require("../supports/database");
 const { getMessageCaption, getPhoneNumber, getMsgKey, randDelay } = require("../supports/message");
 
 const historyHandler = {
-  home: Home.execute,
-  menu: Menu.execute,
-  book: Book.execute,
-  room: Room.execute,
-  time: Time.execute,
+  home,
+  menu,
+  book,
+  room,
+  time,
+  Thome,
 };
 
 class Handlers {
@@ -20,7 +23,7 @@ class Handlers {
     try {
       const handler = historyHandler[history];
       if (handler) {
-        await randDelay();
+        // await randDelay();
         sock.readMessages([getMsgKey(message)]);
         const msg = getMessageCaption(message);
         if (msg === "0" || msg === "exit") {
@@ -28,11 +31,10 @@ class Handlers {
             return await handler(sock, message);
           }
           await Temp.deleteData(getPhoneNumber(message));
-          await updateData(getPhoneNumber(message), { history: "home", room: "", date: "", time: ""});
-          return await Home.execute(sock, message);
-        } else {
-        await handler(sock, message);
+          await updateData(getPhoneNumber(message), { history: "home", room: "", date: "", time: "" });
+          return await home(sock, message);
         }
+        await handler(sock, message);
       }
     } catch (error) {
       console.error(error);

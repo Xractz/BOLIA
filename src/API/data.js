@@ -40,7 +40,7 @@ class Data {
     }
   }
 
-  async uploadDocument(formData, maxRetries = 3, delayBetweenRetries = 1000) {
+  async uploadDocument(formData, maxRetries = 5, delayBetweenRetries = 1000) {
     let attempts = 0;
 
     while (attempts < maxRetries) {

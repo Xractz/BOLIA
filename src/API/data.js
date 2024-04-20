@@ -40,27 +40,33 @@ class Data {
     }
   }
 
-  async uploadDocument(data) {
-    try {
-      const uploadUrl = "https://lib-uajy.vercel.app/turnitin";
+  async uploadDocument(formData, maxRetries = 3, delayBetweenRetries = 1000) {
+    let attempts = 0;
 
-      const options = {
-        method: "POST",
-        body: data,
-      };
+    while (attempts < maxRetries) {
+      try {
+        const uploadUrl = "https://lib-uajy.vercel.app/turnitin";
 
-      const response = await fetch(uploadUrl, options);
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
+        const options = {
+          method: "POST",
+          body: formData,
+        };
+
+        const response = await fetch(uploadUrl, options);
+        const responseData = await response.json();
+        return responseData;
+      } catch (error) {
+        if (error.code === "ECONNREFUSED" || error.code === "ECONNRESET") {
+          console.error(`Connection error: ${error.message}. Retrying...`);
+          attempts++;
+          await new Promise((resolve) => setTimeout(resolve, delayBetweenRetries));
+        } else {
+          throw error;
+        }
       }
-
-      const data = await response.json();
-      console.log("Upload successful:", data);
-
-      return response;
-    } catch (error) {
-      console.error("There has been a problem with your fetch operation:", error);
     }
+
+    throw new Error(`Upload failed after ${maxRetries} attempts`);
   }
 }
 

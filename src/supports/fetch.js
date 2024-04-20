@@ -63,15 +63,18 @@ const turnitinStatus = async (npm) => {
   }
 }
 
-const turnitinUploadDocument = async (npm, title, media) => {
+const turnitinUploadDocument = async (npm, title, media, fileName, mimeType) => {
   try {
-    let formData = new FormData();
+    const blob = new Blob([media], { type: mimeType });
+    const file = new File([blob], fileName, { type: blob.type });
+
+    const formData = new FormData();
+    formData.append("file", file, fileName);
     formData.append("npm", npm);
     formData.append("title", title);
-    formData.append("file", media);
-    
+
     const response = await Data.uploadDocument(formData);
-    return response;
+    return turnitinUploadMessage(response);
   } catch (error) {
     console.error("There has been a problem with your fetch operation:", error);
   }
@@ -145,6 +148,16 @@ const turnitinStatusMessage = (response) => {
   }
 
   return message;
+};
+
+const turnitinUploadMessage = (response) => {
+  let messages;
+
+  const { data: { email, message, name, npm, phone } } = response;
+
+  messages = `👤 *Nama*   : ${name}\n🪪 *NPM*     : ${npm}\n📱 *No. HP* : ${phone}\n📧 *Email*   : ${email}\n\n📝 *Status*   : ${message}`;
+
+  return messages;
 };
 
 module.exports = { available, booked, booking, getNPM, turnitinStatus, turnitinUploadDocument };

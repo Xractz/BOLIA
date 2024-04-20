@@ -32,7 +32,7 @@ class Turnitin {
       if (msg === "1") {
         let text;
         if (!response) {
-          await sendMessageWTyping(sock, jid, { text: "NPM anda tidak terdaftar di Turnitin 😓" });
+          await sendMessageWTyping(sock, jid, { text: "Anda belum menggunggah dokumen apapun pada sistem 😓" });
         } else {
           text = `Status dokumen anda : ${response}`
           await sendMessageWTyping(sock, jid, { text });

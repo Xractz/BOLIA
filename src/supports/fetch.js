@@ -59,7 +59,8 @@ const turnitinStatus = async (npm) => {
     
     return turnitinStatusMessage(response);
   } catch (error) {
-    console.error("There has been a problem with your fetch operation:", error);
+    // console.error("There has been a problem with your fetch operation:", error);
+    return false;
   }
 }
 

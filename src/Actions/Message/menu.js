@@ -51,7 +51,7 @@ class Menu {
           await updateData(getPhoneNumber(message), { name, npm });
 
           if (isTurnitin) {
-            const text = onFetch ? `Halo, ${onFetch}\n\nSilahkan pilih menu dibawah ini :\n\n1. Status\n2. Upload dokumen` : `Silahkan pilih menu dibawah ini :\n\n1. Status\n2. Upload dokumen`;
+            const text = onFetch ? `Halo, ${onFetch}\n\nSilahkan pilih menu dibawah ini :\n\n1. Status\n2. Upload dokumen` : `Silahkan pilih menu dibawah ini :\n\n1. Status\n2. Upload dokumen\n\n> nb: _Pengecekan dokumen akan dilakukan pada jam kerja UAJY._`;
             await sendMessageWTyping(sock, getJid(message), { text });
 
             return await updateData(getPhoneNumber(message), { history: "Thome" });

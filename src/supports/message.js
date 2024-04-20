@@ -61,13 +61,21 @@ const randDelay = async () => {
   await delay(listTime);
 }
 
+const getFileName = (message) => {
+  return message?.message?.documentMessage?.fileName || message?.documentMessage?.fileName || null;
+}
+
+const getMimeType = (message) => {
+  return message?.message?.documentMessage?.mimetype || message?.documentMessage?.mimetype || null;
+}
+
 const isDocumentEligible = (message) => {
   try {
-    const pattern = message?.message?.documentMessage?.mimetype || message?.documentMessage?.mimetype || null;
-    let fileName = message?.message?.documentMessage?.fileName || message?.documentMessage?.fileName || null;
-    fileName = fileName.toLowerCase().split(".").pop();
+    const mimetype = getMimeType(message)
+    const fileName = getFileName(message);
+    const extension = fileName.toLowerCase().split(".").pop();
     const eligibleDocument = ["pdf", "doc", "docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/pdf"];
-    if (eligibleDocument.includes(pattern) && eligibleDocument.includes(fileName)) {
+    if (eligibleDocument.includes(mimetype) && eligibleDocument.includes(extension)) {
       return true;
     } 
     else {
@@ -93,5 +101,7 @@ module.exports = {
   isClient,
   sendMessageWTyping,
   randDelay,
+  getFileName,
+  getMimeType,
   isDocumentEligible,
 };

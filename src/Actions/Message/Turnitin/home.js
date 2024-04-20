@@ -100,7 +100,7 @@ class Turnitin {
                 uploadDocumentConfirmation = false;
                 onDocument = false;
 
-                await updateData(getPhoneNumber(message), { history: "home" });
+                await updateData(getPhoneNumber(message), { history: "home", status: "offline", timer: 0});
               }
               
             } catch (error) {

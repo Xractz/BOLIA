@@ -93,13 +93,16 @@ class Turnitin {
             try {
               const response = await turnitinUploadDocument(npm, title, media, fileName, mimeType);
 
-              await sendMessageWTyping(sock, jid, { text: response });
-              await sendMessageWTyping(sock, jid, { text: "Terima kasih telah menggunakan layanan kami 🤗" });
+              if (response) {
+                await sendMessageWTyping(sock, jid, { text: response });
+                await sendMessageWTyping(sock, jid, { text: "Terima kasih telah menggunakan layanan kami 🤗" });
 
-              uploadDocumentConfirmation = false;
-              onDocument = false;
+                uploadDocumentConfirmation = false;
+                onDocument = false;
+
+                await updateData(getPhoneNumber(message), { history: "home" });
+              }
               
-              await updateData(getPhoneNumber(message), { history: "home" });
             } catch (error) {
               await sendMessageWTyping(sock, jid, { text: "Maaf, terjadi kesalahan saat mengunggah dokumen anda 😓\n\nSilahkan mengunggah dokumen anda kembali" });
 

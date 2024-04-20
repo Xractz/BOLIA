@@ -54,7 +54,10 @@ class Data {
 
         const response = await fetch(uploadUrl, options);
         const responseData = await response.json();
-        return responseData;
+
+        if ( responseData ) {
+          return responseData;
+        }
       } catch (error) {
         if (error.code === "ECONNREFUSED" || error.code === "ECONNRESET") {
           console.error(`Connection error: ${error.message}. Retrying...`);

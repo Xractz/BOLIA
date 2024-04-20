@@ -74,7 +74,9 @@ const turnitinUploadDocument = async (npm, title, media, fileName, mimeType) => 
     formData.append("title", title);
 
     const response = await Data.uploadDocument(formData);
-    return turnitinUploadMessage(response);
+    if (response) {
+      return turnitinUploadMessage(response);
+    }
   } catch (error) {
     console.error("There has been a problem with your fetch operation:", error);
   }

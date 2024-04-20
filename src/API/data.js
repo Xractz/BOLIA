@@ -53,10 +53,20 @@ class Data {
         };
 
         const response = await fetch(uploadUrl, options);
-        const responseData = await response.json();
 
-        if ( responseData ) {
-          return responseData;
+        if (response.ok) {
+          try {
+            const responseData = await response.json();
+            return responseData;
+          } catch (jsonError) {
+            console.error("Non-JSON response. Retrying...");
+            attempts++;
+            await new Promise((resolve) => setTimeout(resolve, delayBetweenRetries));
+          }
+        } else {
+          console.error(`Upload failed with status: ${response.status}. Retrying...`);
+          attempts++;
+          await new Promise((resolve) => setTimeout(resolve, delayBetweenRetries));
         }
       } catch (error) {
         if (error.code === "ECONNREFUSED" || error.code === "ECONNRESET") {
